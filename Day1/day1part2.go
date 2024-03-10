@@ -5,16 +5,38 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 	"unicode"
 )
 
-func checkPart2(e error) {
+type WordNumber struct {
+	code  string
+	value string
+}
+
+func check(e error) {
 	if e != nil {
 		panic(e)
 	}
 }
 
-func day2() {
+var wordNumber = [...]WordNumber{
+	{code: "one", value: "one1one"},
+	{code: "two", value: "two2two"},
+	{code: "three", value: "three3three"},
+	{code: "four", value: "four4four"},
+	{code: "five", value: "five5five"},
+	{code: "six", value: "six6six"},
+	{code: "seven", value: "seven7seven"},
+	{code: "eight", value: "eight8eight"},
+	{code: "nine", value: "nine9nine"},
+}
+
+func main() {
+	FindFistAndLastNumber()
+}
+
+func FindFistAndLastNumber() {
 	f, err := os.Open("Day1Input.txt")
 	sum := 0
 	check(err)
@@ -24,7 +46,7 @@ func day2() {
 	for fileScanner.Scan() {
 		firstNum := 0
 		lastNum := 0
-		str := fileScanner.Text()
+		str := modifileTextInput(fileScanner.Text())
 		for _, char := range str {
 			if unicode.IsDigit(char) {
 				firstNum1, _ := strconv.Atoi(string(char))
@@ -42,9 +64,21 @@ func day2() {
 			}
 		}
 		sum += firstNum*10 + lastNum
+		fmt.Println(str, fileScanner.Text(), firstNum, lastNum)
 	}
 
 	check(err)
 
 	fmt.Println(sum)
+}
+
+func modifileTextInput(text string) string {
+
+	retString := text
+
+	for _, value := range wordNumber {
+		retString = strings.Replace(retString, value.code, value.value, -1)
+	}
+
+	return retString
 }
